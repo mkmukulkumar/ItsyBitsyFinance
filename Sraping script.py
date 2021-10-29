@@ -1,9 +1,42 @@
 import time
+import smtplib
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from openpyxl import load_workbook
 from selenium.webdriver.common.by import By
 
+def sendmail(bcc):
+    gmail_user = "itsybitsyfinance@gmail.com"
+    gmail_password = "mohit69tushar"
+
+    sent_from = gmail_user
+    to = ["das.5@iitj.ac.in"]
+    cc = ["babra.1@iitj.ac.in","suniketdas07011999@gmail.com","agarwal.6@iitj.ac.in"]
+    bcc = ["mukulkumar258@gmail.com"]
+    subject = "Lorem ipsum dolor sit amet"
+    body = "consectetur adipiscing elit"
+
+
+    email_text = """\
+    From: %s
+    To: %s
+    CC: %s
+    Subject: %s
+
+    %s
+    """ % (sent_from, ", ".join(to), ", ".join(cc), subject, body)
+
+    toaddrs = [to] + cc + bcc
+
+    try:
+        smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        smtp_server.ehlo()
+        smtp_server.login(gmail_user, gmail_password)
+        smtp_server.sendmail(sent_from, toaddrs, email_text)
+        smtp_server.close()
+        print ("Email sent successfully!")
+    except Exception as ex:
+        print ("Something went wrong….",ex)
 
 def addDirect(arr,k):
     wb = load_workbook(r"C:\Users\Mukul\Desktop\Github\Itsy Bitsy Finance\Stocks.xlsx")
